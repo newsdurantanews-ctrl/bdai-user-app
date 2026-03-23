@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BDAi By Azad</string>
+    <string name="app_desc">বাংলাদেশের নিজস্ব AI প্ল্যাটফর্ম — Chat, Image, Code, Voice সব বাংলায়</string>
+    <string name="default_web_client_id">930945592495-orqvmnv2pp2ipggsekk6m80727n42dp7.apps.googleusercontent.com</string>
+    <string name="perm_audio_title">মাইক্রোফোন দরকার</string>
+    <string name="perm_audio_msg">বাংলা Voice AI ব্যবহার করতে মাইক্রোফোন অনুমতি দিন।</string>
+    <string name="perm_camera_title">ক্যামেরা দরকার</string>
+    <string name="perm_camera_msg">Vision AI তে ছবি তুলতে ক্যামেরা অনুমতি দিন।</string>
+    <string name="perm_storage_title">ফাইল অ্যাক্সেস দরকার</string>
+    <string name="perm_storage_msg">ছবি upload করতে ফাইল অ্যাক্সেস অনুমতি দিন।</string>
+    <string name="perm_notif_title">Notification চালু করুন</string>
+    <string name="perm_notif_msg">Admin এর নতুন offer ও update এর জন্য notification চালু রাখুন।</string>
+    <string name="cancel">বাতিল</string>
+</resources>
