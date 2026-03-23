@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>BDAi</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--acc:#c96e3f;--acc2:#a85830;--abg:#fdf0e8;--abdr:#f0c9a8;--bg:#faf8f6;--bg2:#fff;--sur:#f7f3f0;--sur2:#ede8e4;--bdr:#e0d9d3;--txt:#1a1410;--mut:#8a7a6e;--green:#16a34a;--red:#dc2626;--font:'Noto Sans Bengali',sans-serif;--sora:'Sora',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--txt);font-size:14px}
+::-webkit-scrollbar{width:2px;height:2px}::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+.screen{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);z-index:1}.screen.on{display:flex}
+.fade{animation:fadeUp .25s ease}@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* TOPBAR */
+.tb{height:52px;background:var(--bg2);border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
+.tb-logo{width:30px;height:30px;object-fit:contain;border-radius:6px}
+.tb-name{font-family:var(--sora);font-weight:700;font-size:14px;color:var(--txt)}.tb-name span{color:var(--acc)}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.tb-back{background:none;border:none;font-size:22px;color:var(--mut);cursor:pointer;padding:4px;line-height:1}
+.pbadge{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:700;border:1px solid}
+.pb-f{background:var(--abg);color:var(--acc);border-color:var(--abdr)}.pb-p{background:#f0fdf4;color:var(--green);border-color:#86efac}
+
+/* BOTTOM NAV */
+.bnav{height:56px;background:var(--bg2);border-top:1px solid var(--bdr);display:flex;flex-shrink:0}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px}
+.bnav-btn:active{background:var(--sur)}.bnav-btn .bi{font-size:20px}.bnav-btn .bl{font-size:9px;color:var(--mut)}.bnav-btn.on .bl{color:var(--acc);font-weight:700}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* SPLASH */
+#splash{background:var(--bg);justify-content:center;align-items:center;gap:0;z-index:200}
+.spl-logo{width:80px;height:80px;object-fit:contain;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1);filter:drop-shadow(0 4px 12px rgba(201,110,63,.3))}50%{transform:scale(1.08);filter:drop-shadow(0 8px 24px rgba(201,110,63,.5))}}
+.spl-name{font-family:var(--sora);font-size:22px;font-weight:800;color:var(--txt);margin-top:16px}
+.spl-sub{font-size:12px;color:var(--mut);margin-top:4px}
+.spl-dots{display:flex;gap:6px;margin-top:20px}
+.spl-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:sdot 1.2s ease infinite}
+.spl-dot:nth-child(2){animation-delay:.2s}.spl-dot:nth-child(3){animation-delay:.4s}
+@keyframes sdot{0%,80%,100%{transform:scale(.5);opacity:.5}40%{transform:scale(1);opacity:1}}
+
+/* LOGIN */
+#login{justify-content:center;align-items:center;padding:32px 24px;gap:0}
+.l-logo{width:76px;height:76px;object-fit:contain;margin-bottom:20px;filter:drop-shadow(0 4px 16px rgba(201,110,63,.3))}
+.l-title{font-family:var(--sora);font-size:24px;font-weight:800;color:var(--txt);text-align:center;margin-bottom:6px}
+.l-sub{font-size:13px;color:var(--mut);text-align:center;line-height:1.7;margin-bottom:28px}
+.g-btn{width:100%;padding:13px;background:#fff;border:1.5px solid var(--bdr);border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;font-size:13.5px;font-weight:600;color:#333;box-shadow:0 2px 10px rgba(0,0,0,.08);transition:all .2s;margin-bottom:12px}
+.g-btn:active{transform:scale(.98)}
+.or{display:flex;align-items:center;gap:10px;width:100%;margin:4px 0 12px}.or-l{flex:1;height:1px;background:var(--bdr)}.or-t{font-size:11px;color:var(--mut)}
+.e-btn{width:100%;padding:13px;background:var(--acc);border:none;border-radius:14px;font-family:var(--font);font-size:14px;font-weight:700;color:#fff;cursor:pointer}
+.l-foot{font-size:10.5px;color:var(--mut);text-align:center;margin-top:16px;line-height:1.6}
+
+/* HOME */
+.home-body{padding:16px}
+.offer-bar{background:linear-gradient(135deg,#d97706,#f59e0b);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer}
+.ob-ic{font-size:22px}.ob-t{flex:1}.ob-title{font-size:12.5px;font-weight:700;color:#fff}.ob-sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:1px}
+.ob-x{background:rgba(255,255,255,.3);border:none;border-radius:50%;width:22px;height:22px;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.wcard{background:linear-gradient(135deg,var(--acc),#e8956a);border-radius:16px;padding:20px 18px;margin-bottom:16px;position:relative;overflow:hidden}
+.wcard::after{content:'BDAi';position:absolute;right:-10px;bottom:-15px;font-family:var(--sora);font-size:60px;font-weight:800;color:rgba(255,255,255,.12);pointer-events:none}
+.wc-logo{width:44px;height:44px;object-fit:contain;margin-bottom:10px;filter:brightness(0)invert(1)}
+.wc-title{font-family:var(--sora);font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+.wc-msg{font-size:12px;color:rgba(255,255,255,.85);line-height:1.7}
+.usg-mini{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.um-i{background:rgba(255,255,255,.2);border-radius:8px;padding:4px 9px;font-size:10.5px;color:#fff;font-weight:600}
+.sec-title{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.fc{background:var(--bg2);border:1px solid var(--bdr);border-radius:14px;padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.fc:active{background:var(--sur);transform:scale(.98)}.fc-ic{font-size:26px;margin-bottom:8px}.fc-n{font-size:12px;font-weight:600}.fc-d{font-size:10.5px;color:var(--mut);margin-top:2px}
+.fc-lim{position:absolute;top:8px;right:8px;font-size:8.5px;padding:2px 6px;border-radius:6px;font-weight:700}
+.lf{background:var(--abg);color:var(--acc)}.lu{background:#f0fdf4;color:var(--green)}
+.up-card{background:var(--bg2);border:1px solid var(--abdr);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px}
+.up-card:active{background:var(--abg)}.uc-ic{font-size:28px}.uc-t{flex:1}
+.uc-title{font-size:13px;font-weight:700;color:var(--acc)}.uc-sub{font-size:11px;color:var(--mut);margin-top:2px}.uc-arr{font-size:18px;color:var(--acc)}
+
+/* CHAT */
+.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.msg{display:flex;align-items:flex-end;gap:8px;animation:fadeUp .2s ease}
+.msg-u{flex-direction:row-reverse}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.av-ai{background:var(--acc)}.av-ai img{width:100%;height:100%;object-fit:contain}
+.av-u{background:var(--acc);color:#fff;font-size:12px;font-weight:700}
+.mw{display:flex;flex-direction:column;max-width:78%}.mw-u{align-items:flex-end}
+.mname{font-size:9.5px;color:var(--mut);font-weight:600;margin-bottom:3px;padding:0 4px}
+.bub{padding:10px 13px;font-size:13px;line-height:1.75;word-break:break-word}
+.bub-ai{background:var(--bg2);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;box-shadow:0 1px 6px rgba(0,0,0,.06);color:var(--txt)}
+.bub-u{background:var(--acc);color:#fff;border-radius:16px 16px 4px 16px}
+.bub-ai pre{background:#1a1a2e;color:#e2e8f0;border-radius:8px;padding:10px;font-size:11px;font-family:monospace;overflow-x:auto;margin:6px 0;line-height:1.5;white-space:pre}
+.bub-ai code{background:var(--sur2);padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
+.mact{display:flex;gap:4px;margin-top:5px}
+.mact-btn{font-size:10px;color:var(--mut);cursor:pointer;padding:3px 8px;background:var(--sur);border:none;border-radius:6px;font-family:var(--font);transition:all .15s}
+.mact-btn:active{background:var(--sur2)}
+.typing-bub{background:var(--bg2);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;padding:11px 15px;display:inline-flex;gap:4px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.td{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:td .8s ease infinite}
+.td:nth-child(2){animation-delay:.15s}.td:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.inp-area{padding:8px 12px 10px;background:var(--bg2);border-top:1px solid var(--bdr);flex-shrink:0}
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}.chips::-webkit-scrollbar{height:0}
+.chip{padding:5px 11px;background:var(--sur);border-radius:20px;font-size:10.5px;cursor:pointer;white-space:nowrap;color:var(--mut);border:none;font-family:var(--font);transition:all .15s}
+.chip:active{background:var(--abg);color:var(--acc)}
+.inp-box{background:var(--bg2);border:2px solid var(--bdr);border-radius:16px;transition:all .2s}
+.inp-box:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--abg)}
+.inp-row{display:flex;align-items:flex-end;padding:8px 10px 6px;gap:7px}
+.chatx{flex:1;background:none;border:none;outline:none;font-family:var(--font);font-size:13.5px;resize:none;min-height:34px;max-height:100px;overflow-y:auto;line-height:1.6;color:var(--txt)}
+.chatx::placeholder{color:var(--mut)}
+.sbtn{width:36px;height:36px;border-radius:10px;background:var(--acc);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:16px;flex-shrink:0;transition:all .15s}
+.sbtn:active{background:var(--acc2);transform:scale(.92)}
+.tool-row{display:flex;align-items:center;padding:4px 8px 6px;gap:2px}
+.tbtn{background:none;border:none;cursor:pointer;font-size:16px;padding:5px 7px;border-radius:8px;color:var(--mut);transition:all .15s}
+.tbtn:active{background:var(--sur);color:var(--acc)}
+.hint{flex:1;text-align:right;font-size:9.5px;color:var(--mut)}
+
+/* FEATURE SCREENS */
+.feat-body{padding:16px}
+.fsec{background:var(--bg2);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:12px}
+.fs-title{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.finp{width:100%;border:1.5px solid var(--bdr);border-radius:10px;padding:10px 12px;font-family:var(--font);font-size:13px;color:var(--txt);outline:none;background:var(--bg2);margin-bottom:10px;transition:border-color .2s}
+.finp:focus{border-color:var(--acc)}.finp::placeholder{color:var(--mut)}
+textarea.finp{resize:none;min-height:80px;line-height:1.6}
+select.finp{cursor:pointer}
+.gen-btn{width:100%;padding:12px;background:var(--acc);border:none;border-radius:10px;font-family:var(--font);font-size:14px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;margin-top:4px}
+.gen-btn:active{background:var(--acc2)}.gen-btn:disabled{background:var(--bdr);cursor:not-allowed}
+.result-box{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:12px;font-size:12.5px;line-height:1.75;color:var(--txt);min-height:60px}
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.img-card{aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--sur);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;position:relative}
+.img-card img{width:100%;height:100%;object-fit:cover;display:block}
+.spin{display:inline-flex;gap:3px;align-items:center;justify-content:center;width:100%;padding:20px}
+.spin-d{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:td .8s ease infinite}
+.spin-d:nth-child(2){animation-delay:.15s}.spin-d:nth-child(3){animation-delay:.3s}
+
+/* PAYMENT */
+.pay-body{padding:16px}
+.plan-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.plan-opt{padding:14px;border:2px solid var(--bdr);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--bg2);transition:all .2s}
+.plan-opt.sel,.plan-opt:active{border-color:var(--acc);background:var(--abg)}
+.po-n{font-size:13px;font-weight:600}.po-d{font-size:11px;color:var(--mut);margin-top:2px}
+.po-badge{font-size:9px;background:var(--abg);color:var(--acc);padding:2px 7px;border-radius:8px;font-weight:700;margin-left:6px;border:1px solid var(--abdr)}
+.po-p{font-size:16px;font-weight:800;color:var(--acc);font-family:var(--sora)}
+.pm-head{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.pm-item{border:1.5px solid var(--bdr);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;background:var(--bg2);transition:all .2s}
+.pm-item.sel,.pm-item:active{border-color:var(--acc);background:var(--abg)}
+.pm-row{display:flex;align-items:center;gap:10px;margin-bottom:3px}
+.pm-ic{font-size:20px}.pm-nm{font-size:13px;font-weight:600}.pm-num{font-size:13px;color:var(--acc);font-weight:700}
+.pm-note{font-size:10.5px;color:var(--mut)}
+.pay-inst{background:var(--abg);border:1px solid var(--abdr);border-radius:12px;padding:14px;margin-bottom:14px}
+.pi-title{font-size:12px;font-weight:700;color:var(--acc);margin-bottom:8px}
+.pi-steps{font-size:11.5px;color:#6b5442;line-height:2.2}
+.trx-inp{width:100%;border:2px solid var(--bdr);border-radius:12px;padding:11px 14px;font-family:var(--font);font-size:14px;color:var(--txt);outline:none;background:var(--bg2);margin-bottom:8px;transition:border-color .2s}
+.trx-inp:focus{border-color:var(--acc)}
+.pay-btn{width:100%;padding:13px;background:var(--acc);border:none;border-radius:12px;font-family:var(--font);font-size:14px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.pay-btn:active{background:var(--acc2)}
+
+/* PROFILE */
+.ph-header{padding:20px 16px;text-align:center;border-bottom:1px solid var(--bdr);background:linear-gradient(135deg,var(--abg),var(--bg2))}
+.ph-av{width:60px;height:60px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin:0 auto 10px;overflow:hidden;border:3px solid var(--bg2);box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.ph-av img{width:100%;height:100%;object-fit:cover}
+.ph-name{font-size:15px;font-weight:700}.ph-email{font-size:11.5px;color:var(--mut);margin-top:2px}.ph-plan{margin-top:8px;display:inline-block}
+.usg-sec{padding:14px 16px;border-bottom:1px solid var(--bdr)}
+.usg-title{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.ub-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ub-ic{width:20px;text-align:center;font-size:14px;flex-shrink:0}
+.ub-track{flex:1;height:6px;background:var(--sur2);border-radius:3px;overflow:hidden}
+.ub-fill{height:100%;border-radius:3px;background:var(--acc);transition:width .5s ease}
+.ub-num{font-size:10.5px;color:var(--mut);width:38px;text-align:right;flex-shrink:0}
+.menu-list{padding:6px 0}
+.ml-item{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--sur);transition:background .15s}
+.ml-item:active{background:var(--sur)}
+.ml-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ml-t{flex:1}.ml-title{font-size:13px;font-weight:500}.ml-sub{font-size:10.5px;color:var(--mut);margin-top:1px}.ml-arr{font-size:16px;color:var(--bdr)}
+
+/* VOICE */
+.voice-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;gap:20px}
+.v-btn{width:100px;height:100px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:40px;box-shadow:0 4px 20px rgba(201,110,63,.4);transition:all .3s;border:none}
+.v-btn.recording{background:#dc2626;box-shadow:0 4px 20px rgba(220,38,38,.5);animation:rPulse 1s ease infinite}
+@keyframes rPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.v-status{font-size:13px;color:var(--mut);text-align:center}
+.v-transcript{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;padding:14px;width:100%;min-height:60px;font-size:13px;color:var(--mut);text-align:center;line-height:1.7}
+.v-reply{display:none;background:var(--bg2);border:1px solid var(--bdr);border-radius:14px;padding:14px;width:100%;font-size:13px;line-height:1.75}
+
+/* TOAST */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) scale(.9);background:var(--txt);color:#fff;padding:9px 18px;border-radius:20px;font-size:12.5px;z-index:1000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:85vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* SHEET */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.on{opacity:1;pointer-events:all}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;padding:20px 16px 32px;z-index:51;transform:translateY(100%);transition:transform .3s ease;max-height:85vh;overflow-y:auto}
+.sheet.on{transform:translateY(0)}
+.sh-handle{width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:0 auto 16px}
+.sh-title{font-family:var(--sora);font-size:16px;font-weight:700;margin-bottom:14px}
+.sh-btn{width:100%;padding:12px;border:none;border-radius:12px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;transition:all .2s}
+.sh-acc{background:var(--acc);color:#fff}.sh-out{background:none;border:1.5px solid var(--bdr);color:var(--mut)}.sh-red{background:#fff0f0;color:var(--red);border:1.5px solid #fca5a5}
+
+/* IMG VIEWER */
+.iv{position:fixed;inset:0;background:#000;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center}
+.iv.on{display:flex}
+.iv img{max-width:100%;max-height:85vh;object-fit:contain}
+.iv-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.iv-acts{position:absolute;bottom:24px;display:flex;gap:10px}
+.iv-btn{padding:10px 20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;color:#fff;font-size:12px;cursor:pointer;font-family:var(--font)}
+
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(250,248,246,.85);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.loading-overlay.on{display:flex}
+.lo-spin{width:40px;height:40px;border:3px solid var(--bdr);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lo-txt{font-size:13px;color:var(--mut)}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="screen on" id="splash">
+  <img id="spl-logo" src="logo.png" class="spl-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23c96e3f%22/><text y=%22.9em%22 font-size=%2250%22 x=%2250%22 text-anchor=%22middle%22 fill=%22white%22>B</text></svg>'">
+  <div class="spl-name" id="spl-name">BDAi By Azad</div>
+  <div class="spl-sub">বাংলাদেশের নিজস্ব AI</div>
+  <div class="spl-dots"><div class="spl-dot"></div><div class="spl-dot"></div><div class="spl-dot"></div></div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen" id="login">
+  <img id="l-logo" src="logo.png" class="l-logo" onerror="this.style.display='none'">
+  <div class="l-title" id="l-title">BDAi By Azad</div>
+  <div class="l-sub">বাংলাদেশের প্রথম নিজস্ব<br>AI প্ল্যাটফর্মে স্বাগতম 🇧🇩</div>
+  <button class="g-btn" onclick="Native.googleLogin()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    Google দিয়ে Login করুন
+  </button>
+  <div class="or"><div class="or-l"></div><div class="or-t">অথবা</div><div class="or-l"></div></div>
+  <button class="e-btn" onclick="toast('Email login coming soon')">📧 Email দিয়ে Login</button>
+  <div class="l-foot">Login করলে আমাদের শর্তাবলী মেনে নিচ্ছেন</div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div class="tb">
+    <img id="h-logo" src="logo.png" class="tb-logo" onerror="this.style.display='none'">
+    <div class="tb-name" id="h-appname">BDAi <span>By Azad</span></div>
+    <div class="tb-r"><span class="pbadge pb-f" id="h-plan">Free</span><button class="tbtn" onclick="goTo('profile')" style="font-size:22px">☰</button></div>
+  </div>
+  <div class="content home-body">
+    <div class="offer-bar" id="offer-bar" style="display:none">
+      <div class="ob-ic">🎉</div>
+      <div class="ob-t"><div class="ob-title" id="offer-title">বিশেষ অফার!</div><div class="ob-sub" id="offer-desc"></div></div>
+      <button class="ob-x" onclick="this.closest('.offer-bar').style.display='none'">✕</button>
+    </div>
+    <div class="wcard">
+      <img src="logo.png" class="wc-logo" onerror="this.style.display='none'">
+      <div class="wc-title" id="h-wtitle">BDAi তে স্বাগতম!</div>
+      <div class="wc-msg" id="h-wmsg">আমি BDAi — বাংলাদেশের নিজস্ব AI সহকারী। 🇧🇩</div>
+      <div class="usg-mini" id="usg-mini"></div>
+    </div>
+    <div class="sec-title">সব Feature</div>
+    <div class="feat-grid" id="feat-grid">
+      <div class="fc" onclick="goTo('chat')"><div class="fc-ic" id="ic-chat">💬</div><div class="fc-n">চ্যাট</div><div class="fc-d">AI সহকারী</div><span class="fc-lim lf" id="lim-chat">৫০/দিন</span></div>
+      <div class="fc" onclick="goTo('image')"><div class="fc-ic" id="ic-image">🎨</div><div class="fc-n">ছবি তৈরি</div><div class="fc-d">Flux/SDXL</div><span class="fc-lim lf" id="lim-image">১০/দিন</span></div>
+      <div class="fc" onclick="goTo('code')"><div class="fc-ic" id="ic-code">💻</div><div class="fc-n">কোড</div><div class="fc-d">WP/PHP/Python</div><span class="fc-lim lf" id="lim-code">৫/দিন</span></div>
+      <div class="fc" onclick="goTo('video')"><div class="fc-ic" id="ic-video">🎬</div><div class="fc-n">ভিডিও</div><div class="fc-d">AI Video</div><span class="fc-lim lf" id="lim-video">২/দিন</span></div>
+      <div class="fc" onclick="goTo('vision')"><div class="fc-ic" id="ic-vision">👁️</div><div class="fc-n">Vision</div><div class="fc-d">ছবি বিশ্লেষণ</div><span class="fc-lim lu">∞</span></div>
+      <div class="fc" onclick="goTo('doc')"><div class="fc-ic" id="ic-doc">📄</div><div class="fc-n">ডকুমেন্ট</div><div class="fc-d">PDF/Excel</div><span class="fc-lim lu">∞</span></div>
+      <div class="fc" onclick="goTo('voice')"><div class="fc-ic" id="ic-voice">🎤</div><div class="fc-n">বাংলা Voice</div><div class="fc-d">STT+TTS</div><span class="fc-lim lu">∞</span></div>
+      <div class="fc" onclick="goTo('web')"><div class="fc-ic" id="ic-web">🌐</div><div class="fc-n">ওয়েব সার্চ</div><div class="fc-d">Real-time</div><span class="fc-lim lu">∞</span></div>
+      <div class="fc" onclick="goTo('write')"><div class="fc-ic" id="ic-write">📝</div><div class="fc-n">লেখালেখি</div><div class="fc-d">Blog/CV/Email</div><span class="fc-lim lu">∞</span></div>
+      <div class="fc" onclick="goTo('translate')"><div class="fc-ic" id="ic-translate">🗣️</div><div class="fc-n">অনুবাদ</div><div class="fc-d">যেকোনো ভাষা</div><span class="fc-lim lu">∞</span></div>
+    </div>
+    <div class="up-card" id="up-card" onclick="goTo('payment')">
+      <div class="uc-ic">⭐</div>
+      <div class="uc-t"><div class="uc-title">Premium পান</div><div class="uc-sub" id="up-price">মাত্র ৳২৯৯/মাস • সব Unlimited</div></div>
+      <div class="uc-arr">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="screen" id="chat">
+  <div class="tb">
+    <button class="tb-back" onclick="goTo('home')">←</button>
+    <img src="logo.png" class="tb-logo" onerror="this.style.display='none'">
+    <div class="tb-name">BDAi <span>চ্যাট</span></div>
+    <div class="tb-r"><span class="pbadge pb-f" id="chat-lim-badge">৫০/৫০</span></div>
+  </div>
+  <div class="msgs" id="chatMsgs">
+    <div class="msg">
+      <div class="av av-ai"><img src="logo.png" onerror="this.outerHTML='🌟'"></div>
+      <div class="mw"><div class="mname">BDAi</div>
+      <div class="bub bub-ai">আস্‌সালামু আলাইকুম! আমি BDAi। বাংলাদেশের নিজস্ব AI সহকারী। কীভাবে সাহায্য করব? 😊</div></div>
+    </div>
+  </div>
+  <div class="inp-area">
+    <div class="chips" id="chips">
+      <button class="chip" onclick="sendMsg('তুমি কে?')">🤔 পরিচয়</button>
+      <button class="chip" onclick="sendMsg('Python calculator কোড লিখো')">💻 Python কোড</button>
+      <button class="chip" onclick="sendMsg('বাংলাদেশ সম্পর্কে বলো')">🇧🇩 বাংলাদেশ</button>
+      <button class="chip" onclick="sendMsg('WordPress plugin তৈরি করো')">🔌 WP Plugin</button>
+    </div>
+    <div class="inp-box">
+      <div class="inp-row">
+        <textarea class="chatx" id="chatInp" placeholder="বাংলায় লিখুন..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+        <button class="sbtn" onclick="sendMsg()">➤</button>
+      </div>
+      <div class="tool-row">
+        <button class="tbtn" onclick="openFileAttach('image')" title="ছবি">🖼️</button>
+        <button class="tbtn" onclick="openFileAttach('doc')" title="ফাইল">📎</button>
+        <button class="tbtn" onclick="goTo('voice')" title="ভয়েস">🎤</button>
+        <div class="hint">Shift+Enter = নতুন লাইন</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE -->
+<div class="screen" id="image">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">🎨 ছবি তৈরি</div><div class="tb-r"><span class="pbadge pb-f" id="img-lim-badge">১০/১০</span></div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div class="fs-title">ছবির বর্ণনা লিখুন</div>
+      <textarea class="finp" id="img-prompt" placeholder="বর্ণনা করুন... যেমন: বাংলাদেশের সূর্যাস্ত, নদীতে নৌকা, 4K realistic" rows="3"></textarea>
+      <select class="finp" id="img-style">
+        <option value="flux">✨ Flux (সেরা মান)</option>
+        <option value="turbo">⚡ Turbo (দ্রুত)</option>
+        <option value="sdxl">🎯 SDXL</option>
+        <option value="realistic">📸 Realistic</option>
+        <option value="anime">🌸 Anime</option>
+        <option value="dreamshaper">🎭 DreamShaper</option>
+        <option value="midjourney">🖼️ Midjourney Style</option>
+      </select>
+      <select class="finp" id="img-size">
+        <option value="512,512">1:1 Square (512×512)</option>
+        <option value="768,432">16:9 Landscape (768×432)</option>
+        <option value="432,768">9:16 Portrait (432×768)</option>
+        <option value="1024,1024">1:1 HD (1024×1024)</option>
+      </select>
+      <button class="gen-btn" onclick="generateImage()" id="img-btn">🎨 ৪টি ছবি তৈরি করুন</button>
+    </div>
+    <div class="img-grid" id="img-result">
+      <div class="img-card" style="opacity:.4">🎨</div><div class="img-card" style="opacity:.4">✨</div>
+      <div class="img-card" style="opacity:.4">🖼️</div><div class="img-card" style="opacity:.4">📸</div>
+    </div>
+  </div>
+</div>
+
+<!-- CODE -->
+<div class="screen" id="code">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">💻 কোড জেনারেটর</div><div class="tb-r"><span class="pbadge pb-f" id="code-lim-badge">৫/৫</span></div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div class="fs-title">কোডের ধরন</div>
+      <select class="finp" id="code-type">
+        <option value="wp_theme">🎨 WordPress Theme</option>
+        <option value="wp_plugin">🔌 WordPress Plugin</option>
+        <option value="php">🐘 PHP Application</option>
+        <option value="python">🐍 Python</option>
+        <option value="javascript">⚡ JavaScript / Node.js</option>
+        <option value="react">⚛️ React</option>
+        <option value="flutter">📱 Flutter / Dart</option>
+        <option value="android">🤖 Android / Kotlin</option>
+        <option value="sql">🗄️ SQL / Database</option>
+        <option value="api">🌐 REST API</option>
+      </select>
+      <textarea class="finp" id="code-prompt" placeholder="বিস্তারিত বর্ণনা দিন... যেমন: একটি WP e-commerce theme যেখানে product listing, cart, checkout থাকবে" rows="5"></textarea>
+      <button class="gen-btn" onclick="generateCode()" id="code-btn">⚡ কোড তৈরি করুন</button>
+    </div>
+    <div class="fsec" id="code-result" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="fs-title" style="margin-bottom:0">Generated Code</div>
+        <button onclick="copyCode()" style="padding:4px 10px;background:var(--abg);border:1px solid var(--abdr);border-radius:8px;font-size:11px;color:var(--acc);cursor:pointer;font-family:var(--font)">📋 কপি</button>
+      </div>
+      <pre id="code-output" style="background:#1a1a2e;color:#e2e8f0;border-radius:8px;padding:12px;font-size:11px;font-family:monospace;overflow-x:auto;line-height:1.6;white-space:pre;max-height:350px;overflow-y:auto"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div class="screen" id="video">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">🎬 ভিডিও AI</div><div class="tb-r"><span class="pbadge pb-f" id="vid-lim-badge">২/২</span></div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div style="background:var(--abg);border:1px solid var(--abdr);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11.5px;color:#6b5442">⚠️ Free: দিনে ২টি ভিডিও। তৈরিতে ৩০-৬০ সেকেন্ড লাগে।</div>
+      <textarea class="finp" id="vid-prompt" placeholder="ভিডিওর বর্ণনা দিন... যেমন: সূর্যাস্তের সময় বাংলাদেশের নদী, ঢেউয়ের সাথে নৌকা" rows="4"></textarea>
+      <select class="finp" id="vid-provider">
+        <option value="hf_animatediff">🎬 AnimateDiff (HuggingFace)</option>
+        <option value="hf_modelscope">🎥 ModelScope (HuggingFace)</option>
+        <option value="hf_zeroscope">🎞️ ZeroScope (HuggingFace)</option>
+        <option value="hf_cogvideo">🌟 CogVideo (HuggingFace)</option>
+        <option value="hf_ltxvideo">✨ LTX Video</option>
+      </select>
+      <button class="gen-btn" onclick="generateVideo()" id="vid-btn">🎬 ভিডিও তৈরি করুন</button>
+    </div>
+    <div id="vid-result"></div>
+  </div>
+</div>
+
+<!-- VISION -->
+<div class="screen" id="vision">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">👁️ Vision AI</div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div onclick="document.getElementById('vision-file').click()" style="border:2px dashed var(--bdr);border-radius:12px;padding:28px;text-align:center;cursor:pointer;margin-bottom:12px;transition:all .2s" id="vision-drop">
+        <div style="font-size:36px;margin-bottom:8px">📸</div>
+        <div style="font-size:13px;color:var(--mut)">ছবি upload করুন</div>
+        <div style="font-size:11px;color:var(--bdr);margin-top:4px">JPG, PNG, WEBP</div>
+      </div>
+      <input type="file" id="vision-file" accept="image/*" style="display:none" onchange="visionFileSelected(this)">
+      <img id="vision-preview" src="" style="display:none;width:100%;border-radius:10px;margin-bottom:10px;max-height:200px;object-fit:cover">
+      <select class="finp" id="vision-task">
+        <option value="describe">📝 ছবির বিস্তারিত বর্ণনা</option>
+        <option value="code">💻 Screenshot থেকে Code</option>
+        <option value="ocr">📄 Text Extract (OCR)</option>
+        <option value="analyze">🔍 গভীর বিশ্লেষণ</option>
+        <option value="translate">🗣️ ছবির Text অনুবাদ</option>
+      </select>
+      <button class="gen-btn" id="vision-btn" onclick="analyzeVision()" disabled>👁️ বিশ্লেষণ করুন</button>
+    </div>
+    <div class="fsec" id="vision-result" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="fs-title" style="margin-bottom:0">ফলাফল</div>
+        <button onclick="copyResult('vision-output')" style="padding:4px 10px;background:var(--abg);border:1px solid var(--abdr);border-radius:8px;font-size:11px;color:var(--acc);cursor:pointer;font-family:var(--font)">📋 কপি</button>
+      </div>
+      <div class="result-box" id="vision-output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENT -->
+<div class="screen" id="doc">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">📄 Document AI</div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div onclick="document.getElementById('doc-file').click()" style="border:2px dashed var(--bdr);border-radius:12px;padding:28px;text-align:center;cursor:pointer;margin-bottom:12px" id="doc-drop">
+        <div style="font-size:36px;margin-bottom:8px">📂</div>
+        <div style="font-size:13px;color:var(--mut)">ফাইল upload করুন</div>
+        <div style="font-size:11px;color:var(--bdr);margin-top:4px">PDF, Excel, Word, TXT, CSV</div>
+      </div>
+      <input type="file" id="doc-file" accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv" style="display:none" onchange="docFileSelected(this)">
+      <div id="doc-file-info" style="display:none;background:var(--sur);border-radius:10px;padding:10px;margin-bottom:10px;font-size:12.5px;color:var(--txt)"></div>
+      <select class="finp" id="doc-task" onchange="document.getElementById('doc-q').style.display=this.value==='qa'?'block':'none'">
+        <option value="summary">📋 সারসংক্ষেপ</option>
+        <option value="qa">❓ প্রশ্ন করুন</option>
+        <option value="analyze">📊 বিশ্লেষণ</option>
+        <option value="translate">🗣️ বাংলায় অনুবাদ</option>
+        <option value="table">📊 Table/Data Extract</option>
+      </select>
+      <textarea class="finp" id="doc-q" placeholder="প্রশ্ন লিখুন..." rows="2" style="display:none"></textarea>
+      <button class="gen-btn" id="doc-btn" onclick="analyzeDoc()" disabled>📄 বিশ্লেষণ করুন</button>
+    </div>
+    <div class="fsec" id="doc-result" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="fs-title" style="margin-bottom:0">ফলাফল</div>
+        <button onclick="copyResult('doc-output')" style="padding:4px 10px;background:var(--abg);border:1px solid var(--abdr);border-radius:8px;font-size:11px;color:var(--acc);cursor:pointer;font-family:var(--font)">📋 কপি</button>
+      </div>
+      <div class="result-box" id="doc-output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- VOICE -->
+<div class="screen" id="voice">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">🎤 বাংলা Voice AI</div></div>
+  <div class="voice-body">
+    <div style="text-align:center"><div style="font-size:13px;color:var(--mut);line-height:1.7">বাংলায় বলুন — AI বাংলায় জবাব দেবে</div></div>
+    <button class="v-btn" id="v-btn" onclick="toggleVoice()">🎤</button>
+    <div class="v-status" id="v-status">বাটনে চাপুন এবং বলুন</div>
+    <div class="v-transcript" id="v-transcript">আপনার কথা এখানে দেখাবে...</div>
+    <div class="v-reply" id="v-reply"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button onclick="testTTS()" style="padding:10px 16px;background:var(--abg);border:1px solid var(--abdr);border-radius:20px;font-size:12px;color:var(--acc);cursor:pointer;font-family:var(--font)">🔊 TTS Test</button>
+      <button onclick="clearVoice()" style="padding:10px 16px;background:var(--sur);border:1px solid var(--bdr);border-radius:20px;font-size:12px;color:var(--mut);cursor:pointer;font-family:var(--font)">🗑️ Clear</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEB SEARCH -->
+<div class="screen" id="web">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">🌐 ওয়েব সার্চ</div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <textarea class="finp" id="web-query" placeholder="কী খুঁজছেন? অথবা URL দিলে summary পাবেন, YouTube link দিলে সারসংক্ষেপ পাবেন" rows="3"></textarea>
+      <select class="finp" id="web-type">
+        <option value="search">🔍 Web Search</option>
+        <option value="url">🌐 Website Summary</option>
+        <option value="youtube">▶️ YouTube Summary</option>
+        <option value="news">📰 বাংলা News</option>
+      </select>
+      <button class="gen-btn" onclick="doWebSearch()">🌐 সার্চ করুন</button>
+    </div>
+    <div class="fsec" id="web-result" style="display:none">
+      <div class="result-box" id="web-output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITING -->
+<div class="screen" id="write">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">📝 Writing Tools</div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <select class="finp" id="write-type">
+        <option value="blog">📝 Blog/Article</option>
+        <option value="email">✉️ Professional Email</option>
+        <option value="cv">📄 CV/Resume</option>
+        <option value="social">📱 Social Media Post</option>
+        <option value="seo">🔍 SEO Content</option>
+        <option value="product">🛒 Product Description</option>
+        <option value="letter">📜 Letter/Application</option>
+      </select>
+      <textarea class="finp" id="write-prompt" placeholder="বিষয় লিখুন... যেমন: আমার কোম্পানি XYZ এর জন্য একটি product launch blog post" rows="4"></textarea>
+      <button class="gen-btn" onclick="generateWrite()">📝 তৈরি করুন</button>
+    </div>
+    <div class="fsec" id="write-result" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="fs-title" style="margin-bottom:0">ফলাফল</div>
+        <button onclick="copyResult('write-output')" style="padding:4px 10px;background:var(--abg);border:1px solid var(--abdr);border-radius:8px;font-size:11px;color:var(--acc);cursor:pointer;font-family:var(--font)">📋 কপি</button>
+      </div>
+      <div class="result-box" id="write-output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSLATE -->
+<div class="screen" id="translate">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">🗣️ অনুবাদ</div></div>
+  <div class="content feat-body">
+    <div class="fsec">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px">
+        <select class="finp" id="tr-from" style="margin-bottom:0"><option value="auto">Auto Detect</option><option value="bn" selected>বাংলা</option><option value="en">English</option><option value="ar">Arabic</option><option value="hi">Hindi</option><option value="ur">Urdu</option></select>
+        <button onclick="swapLang()" style="padding:8px;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;cursor:pointer;font-size:16px">⇄</button>
+        <select class="finp" id="tr-to" style="margin-bottom:0"><option value="en" selected>English</option><option value="bn">বাংলা</option><option value="ar">Arabic</option><option value="hi">Hindi</option><option value="ur">Urdu</option></select>
+      </div>
+      <textarea class="finp" id="tr-input" placeholder="অনুবাদ করতে চান এমন লেখা দিন..." rows="5"></textarea>
+      <button class="gen-btn" onclick="doTranslate()">🗣️ অনুবাদ করুন</button>
+    </div>
+    <div class="fsec" id="tr-result" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="fs-title" style="margin-bottom:0">অনুবাদ</div>
+        <button onclick="copyResult('tr-output')" style="padding:4px 10px;background:var(--abg);border:1px solid var(--abdr);border-radius:8px;font-size:11px;color:var(--acc);cursor:pointer;font-family:var(--font)">📋 কপি</button>
+      </div>
+      <div class="result-box" id="tr-output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="screen" id="payment">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">💳 Premium পান</div></div>
+  <div class="content pay-body">
+    <div class="plan-opts" id="plan-opts">
+      <div class="plan-opt sel" onclick="selPlan(this,'1month')">
+        <div><div class="po-n">১ মাস</div><div class="po-d">সব Unlimited • Priority Speed</div></div>
+        <div class="po-p" id="price-1m">৳২৯৯</div>
+      </div>
+      <div class="plan-opt" onclick="selPlan(this,'3month')">
+        <div><div class="po-n">৩ মাস <span class="po-badge">সাশ্রয়</span></div><div class="po-d">সব Unlimited</div></div>
+        <div class="po-p" id="price-3m">৳৭৯৯</div>
+      </div>
+      <div class="plan-opt" onclick="selPlan(this,'1year')">
+        <div><div class="po-n">১ বছর <span class="po-badge">সেরা মূল্য</span></div><div class="po-d">সব Unlimited</div></div>
+        <div class="po-p" id="price-1y">৳২,৯৯৯</div>
+      </div>
+    </div>
+    <div class="pm-head">পেমেন্ট পদ্ধতি বেছে নিন</div>
+    <div id="pay-methods">
+      <div style="text-align:center;padding:20px;color:var(--mut);font-size:13px">Loading...</div>
+    </div>
+    <div class="pay-inst">
+      <div class="pi-title">📋 পেমেন্ট করার নিয়ম:</div>
+      <div class="pi-steps">১. উপরের নম্বরে <b>Send Money</b> করুন<br>২. Transaction ID কপি করুন<br>৩. নিচে ID ও নম্বর লিখে Submit করুন<br>৪. Admin verify করবেন<br>৫. ২৪ ঘন্টার মধ্যে <b>Premium</b> হবে ✅</div>
+    </div>
+    <input type="text" class="trx-inp" id="trx-id" placeholder="Transaction ID (যেমন: TXN123456789)">
+    <input type="text" class="trx-inp" id="trx-phone" placeholder="আপনার নম্বর (যেটা দিয়ে পাঠিয়েছেন)">
+    <button class="pay-btn" onclick="submitPayment()">✅ Submit করুন</button>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="profile">
+  <div class="tb"><button class="tb-back" onclick="goTo('home')">←</button><div class="tb-name">আমার প্রোফাইল</div></div>
+  <div class="content">
+    <div class="ph-header">
+      <div class="ph-av" id="ph-av"><div id="ph-av-txt">আ</div></div>
+      <div class="ph-name" id="ph-name">Loading...</div>
+      <div class="ph-email" id="ph-email"></div>
+      <div class="ph-plan"><span class="pbadge pb-f" id="ph-plan">🆓 Free</span></div>
+    </div>
+    <div class="usg-sec">
+      <div class="usg-title">আজকের ব্যবহার</div>
+      <div class="ub-row"><div class="ub-ic">💬</div><div class="ub-track"><div class="ub-fill" id="ub-chat" style="width:0%"></div></div><div class="ub-num" id="ubn-chat">০/৫০</div></div>
+      <div class="ub-row"><div class="ub-ic">🎨</div><div class="ub-track"><div class="ub-fill" id="ub-img" style="width:0%"></div></div><div class="ub-num" id="ubn-img">০/১০</div></div>
+      <div class="ub-row"><div class="ub-ic">💻</div><div class="ub-track"><div class="ub-fill" id="ub-code" style="width:0%"></div></div><div class="ub-num" id="ubn-code">০/৫</div></div>
+      <div class="ub-row"><div class="ub-ic">🎬</div><div class="ub-track"><div class="ub-fill" id="ub-vid" style="width:0%"></div></div><div class="ub-num" id="ubn-vid">০/২</div></div>
+    </div>
+    <div class="menu-list">
+      <div class="ml-item" onclick="goTo('payment')" id="up-menu"><div class="ml-ic" style="background:var(--abg)">⭐</div><div class="ml-t"><div class="ml-title" style="color:var(--acc)">Premium Upgrade</div><div class="ml-sub" id="up-menu-sub">৳২৯৯/মাস • সব Unlimited</div></div><div class="ml-arr">›</div></div>
+      <div class="ml-item" onclick="showHistory()"><div class="ml-ic" style="background:#f0f4ff">📜</div><div class="ml-t"><div class="ml-title">Chat History</div><div class="ml-sub">সব কথোপকথন</div></div><div class="ml-arr">›</div></div>
+      <div class="ml-item" onclick="showAbout()"><div class="ml-ic" style="background:var(--abg)">ℹ️</div><div class="ml-t"><div class="ml-title">BDAi সম্পর্কে</div><div class="ml-sub">বাংলাদেশের নিজস্ব AI</div></div><div class="ml-arr">›</div></div>
+      <div class="ml-item" onclick="doLogout()"><div class="ml-ic" style="background:#fff0f0">🚪</div><div class="ml-t"><div class="ml-title" style="color:var(--red)">Logout</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="iv" id="iv"><button class="iv-close" onclick="closeIV()">✕</button><img id="iv-img" src=""><div class="iv-acts"><button class="iv-btn" onclick="Native.share('BDAi দিয়ে তৈরি: '+ivSrc)">📤 Share</button><button class="iv-btn" onclick="copyIV()">📋 Copy URL</button></div></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- OVERLAY + SHEET -->
+<div class="overlay" id="overlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"><div class="sh-handle"></div><div id="sh-content"></div></div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading"><div class="lo-spin"></div><div class="lo-txt" id="lo-txt">Loading...</div></div>
+
+<!-- Firebase REMOVED - Test Mode -->
+<script>
+// ── Firebase stub - কোনো সার্ভার কানেকশন নেই ──
+const db = {
+  collection: () => ({
+    doc: () => ({
+      get: () => Promise.resolve({exists:false, data:()=>({})}),
+      update: () => Promise.resolve(),
+      set: () => Promise.resolve()
+    }),
+    add: () => Promise.resolve(),
+    get: () => Promise.resolve({docs:[]})
+  })
+};
+const auth = { currentUser: null, signOut: ()=>Promise.resolve() };
+</script>
+<script src="js/engine_chat.js"></script>
+<script src="js/engine_image.js"></script>
+<script src="js/engine_others.js"></script>
+<script>
+// ══ APP STATE (No Firebase - Test Mode) ══
+let user = null, plan = 'premium', role = 'user';
+let usage = {chat:0,image:0,code:0,video:0};
+let limits = {chat:50,image:10,code:5,video:2};
+let brand = {}, payMethods = [];
+let selPlanId = '1month', selPayIdx = 0;
+let ivSrc = '';
+let voiceOn = false, voiceRecog = null;
+let codeOutput = '';
+let visionFileData = null, docFileData = null;
+let chatHistory = [];
+
+// ══ NAVIGATION ══
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  const s = document.getElementById(id);
+  if(s){s.classList.add('on');s.classList.add('fade');setTimeout(()=>s.classList.remove('fade'),300);}
+}
+
+// ══ TOAST ══
+function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);}
+
+// ══ LOADING ══
+function showLoading(txt=''){const el=document.getElementById('loading');document.getElementById('lo-txt').textContent=txt||'Loading...';el.classList.add('on');}
+function hideLoading(){document.getElementById('loading').classList.remove('on');}
+
+// ══ SHEET ══
+function openSheet(html){document.getElementById('sh-content').innerHTML=html;document.getElementById('sheet').classList.add('on');document.getElementById('overlay').classList.add('on');}
+function closeSheet(){document.getElementById('sheet').classList.remove('on');document.getElementById('overlay').classList.remove('on');}
+
+// ══ DAILY RESET ══
+function checkDailyReset() {
+  const today = new Date().toDateString();
+  const saved = localStorage.getItem('bdai_usage_date');
+  if(saved !== today) {
+    usage = {chat:0,image:0,code:0,video:0};
+    localStorage.setItem('bdai_usage_date', today);
+    localStorage.setItem('bdai_usage', JSON.stringify(usage));
+  } else {
+    try { usage = JSON.parse(localStorage.getItem('bdai_usage')) || {chat:0,image:0,code:0,video:0}; } catch{ usage = {chat:0,image:0,code:0,video:0}; }
+  }
+  updateUI();
+}
+
+// ══ AUTH CALLBACKS ══
+window._nativeAuth = (j) => {
+  const d = typeof j==='string' ? JSON.parse(j) : j;
+  user = d;
+  plan = 'premium';
+  role = 'user';
+  limits = {chat:999999,image:999999,code:999999,video:999999};
+  checkDailyReset();
+  updateUI();
+  goTo('home');
+};
+window._authError = (e) => { hideLoading(); toast('❌ Login failed: '+e); };
+window._notAdmin = () => {};
+window._onBack = () => {
+  const cur = document.querySelector('.screen.on');
+  if(cur&&cur.id!=='home'&&cur.id!=='login') goTo('home');
+};
+
+// ══ UPDATE UI ══
+function updateUI() {
+  if(!user) return;
+  const isPrem = plan==='premium';
+  const planTxt = isPrem?'⭐ Premium':'🆓 Free';
+  document.querySelectorAll('#h-plan,#ph-plan').forEach(el=>{el.textContent=planTxt;el.className='pbadge '+(isPrem?'pb-p':'pb-f');});
+  if(brand.appName){document.getElementById('h-appname').innerHTML=brand.appName.split(' ').slice(0,-2).join(' ')+' <span>'+brand.appName.split(' ').slice(-2).join(' ')+'</span>';}
+  if(brand.welcomeMsg) document.getElementById('h-wmsg').textContent=brand.welcomeMsg;
+  if(brand.welcomeTitle) document.getElementById('h-wtitle').textContent=brand.welcomeTitle;
+  if(brand.accentColor) document.documentElement.style.setProperty('--acc',brand.accentColor);
+  if(brand.icons) Object.entries(brand.icons).forEach(([k,v])=>{const el=document.getElementById('ic-'+k);if(el)el.textContent=v;});
+  if(isPrem){
+    document.getElementById('up-card').style.display='none';
+    document.getElementById('up-menu').style.display='none';
+    document.querySelectorAll('.fc-lim.lf').forEach(el=>{el.textContent='∞';el.className='fc-lim lu';});
+  } else {
+    document.getElementById('lim-chat').textContent=`${limits.chat}/দিন`;
+    document.getElementById('lim-image').textContent=`${limits.image}/দিন`;
+    document.getElementById('lim-code').textContent=`${limits.code}/দিন`;
+    document.getElementById('lim-video').textContent=`${limits.video}/দিন`;
+  }
+  // Profile
+  document.getElementById('ph-name').textContent = user.name || 'User';
+  document.getElementById('ph-email').textContent = user.email || '';
+  document.getElementById('ph-av-txt').textContent = (user.name||'U')[0].toUpperCase();
+  if(user.photo){document.getElementById('ph-av').innerHTML=`<img src="${user.photo}">`;}
+  // Usage bars
+  const bars=[['chat','💬',usage.chat,limits.chat,'ub-chat','ubn-chat','chat-lim-badge'],['image','🎨',usage.image,limits.image,'ub-img','ubn-img','img-lim-badge'],['code','💻',usage.code,limits.code,'ub-code','ubn-code','code-lim-badge'],['video','🎬',usage.video,limits.video,'ub-vid','ubn-vid','vid-lim-badge']];
+  bars.forEach(([k,ic,u,l,bid,nid,badge])=>{
+    const pct=l>=999999?5:Math.min((u/l)*100,100);
+    const el=document.getElementById(bid);if(el)el.style.width=pct+'%';
+    const nel=document.getElementById(nid);if(nel)nel.textContent=l>=999999?`${u}/∞`:`${u}/${l}`;
+    const bel=document.getElementById(badge);if(bel)bel.textContent=l>=999999?'∞':`${l-u} বাকি`;
+  });
+  // Usage mini
+  document.getElementById('usg-mini').innerHTML=`<div class="um-i">💬 ${usage.chat}/${limits.chat>=999999?'∞':limits.chat}</div><div class="um-i">🎨 ${usage.image}/${limits.image>=999999?'∞':limits.image}</div><div class="um-i">💻 ${usage.code}/${limits.code>=999999?'∞':limits.code}</div><div class="um-i">🎬 ${usage.video}/${limits.video>=999999?'∞':limits.video}</div>`;
+}
+
+function loadBrand() {
+  // No Firebase - brand loaded locally
+}
+
+function loadPayMethods() {
+  // No Firebase - Test Mode
+}
+
+// ══ LIMIT CHECK ══
+function checkLimit(type) {
+  if(plan==='premium') return true;
+  if(usage[type] >= limits[type]) {
+    openSheet(`<div class="sh-title">⚠️ দৈনিক সীমা শেষ</div><p style="font-size:13px;color:var(--mut);margin-bottom:20px;line-height:1.7">আজকের ${type} সীমা (${limits[type]}টি) শেষ হয়েছে।<br>Premium নিলে সব Unlimited হবে!</p><button class="sh-btn sh-acc" onclick="closeSheet();goTo('payment')">⭐ Premium নিন</button><button class="sh-btn sh-out" onclick="closeSheet()">পরে নেব</button>`);
+    return false;
+  }
+  return true;
+}
+
+function saveUsage(type) {
+  usage[type] = (usage[type]||0) + 1;
+  localStorage.setItem('bdai_usage', JSON.stringify(usage));
+  updateUI();
+}
+
+// ══ CHAT ══
+async function sendMsg(q) {
+  const inp = document.getElementById('chatInp');
+  const msg = q || inp.value.trim();
+  if(!msg) return;
+  if(!q){inp.value='';inp.style.height='auto';}
+  if(!checkLimit('chat')) return;
+  const area = document.getElementById('chatMsgs');
+  // User bubble
+  const ud=document.createElement('div');ud.className='msg msg-u';
+  ud.innerHTML=`<div class="av av-u">${(user?.name||'আ')[0]}</div><div class="mw mw-u"><div class="mname" style="text-align:right">${user?.name||'আপনি'}</div><div class="bub bub-u">${msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div></div>`;
+  area.appendChild(ud);area.scrollTop=area.scrollHeight;
+  chatHistory.push({role:'user',content:msg});
+  // Typing
+  const td=document.createElement('div');td.className='msg';
+  td.innerHTML=`<div class="av av-ai"><img src="logo.png" onerror="this.outerHTML='🌟'"></div><div class="mw"><div class="mname">BDAi</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  area.appendChild(td);area.scrollTop=area.scrollHeight;
+  // Real AI call
+  try {
+    const reply = await ChatEngine.send(msg);
+    td.remove();
+    const ad=document.createElement('div');ad.className='msg';
+    const safe=reply.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const fmt=safe.replace(/```(\w*)\n?([\s\S]*?)```/g,'<pre>$2</pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<b>$1</b>');
+    ad.innerHTML=`<div class="av av-ai"><img src="logo.png" onerror="this.outerHTML='🌟'"></div><div class="mw"><div class="mname">BDAi</div><div class="bub bub-ai">${fmt}</div><div class="mact"><button class="mact-btn" onclick="speakBangla(this)">🔊</button><button class="mact-btn" onclick="Native.copy(this.closest('.mw').querySelector('.bub-ai').innerText);toast('✅ কপি!')">📋</button><button class="mact-btn" onclick="this.textContent='👍'">👍</button></div></div>`;
+    area.appendChild(ad);area.scrollTop=area.scrollHeight;
+    chatHistory.push({role:'assistant',content:reply});
+    await saveUsage('chat');
+    // Save unknown questions to knowledge box
+    checkKnowledgeBox(msg, reply);
+  } catch(e) {
+    td.remove();
+    toast('❌ উত্তর পাওয়া যায়নি। আবার চেষ্টা করুন।');
+  }
+}
+
+async function checkKnowledgeBox(q, reply) {
+  if(!user) return;
+  const lower = q.toLowerCase();
+  const uncertain = ['জানি না','don\'t know','cannot','বলতে পারছি না','নিশ্চিত না','unsure'];
+  if(uncertain.some(u=>reply.toLowerCase().includes(u))) {
+    try {
+      // knowledge save disabled in test mode
+    } catch(e){}
+  }
+}
+
+// ══ IMAGE GENERATION ══
+async function generateImage() {
+  const prompt = document.getElementById('img-prompt').value.trim();
+  if(!prompt){toast('⚠️ বর্ণনা লিখুন');return;}
+  if(!checkLimit('image')) return;
+  const btn = document.getElementById('img-btn');
+  btn.disabled=true;btn.textContent='তৈরি হচ্ছে...';
+  const [w,h] = document.getElementById('img-size').value.split(',');
+  const style = document.getElementById('img-style').value;
+  const result = document.getElementById('img-result');
+  result.innerHTML='<div class="img-card"><div class="spin"><div class="spin-d"></div><div class="spin-d"></div><div class="spin-d"></div></div></div>'.repeat(4);
+  try {
+    const urls = await ImageEngine.generate(prompt, style, parseInt(w), parseInt(h));
+    result.innerHTML = urls.map(url=>`<div class="img-card" onclick="viewImg('${url}')"><img src="${url}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=font-size:24px;color:var(--mut)>❌</div>'"></div>`).join('');
+    await saveUsage('image');
+  } catch(e) { result.innerHTML='<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--mut)">❌ ছবি তৈরি হয়নি। আবার চেষ্টা করুন।</div>'; }
+  btn.disabled=false;btn.textContent='🎨 ৪টি ছবি তৈরি করুন';
+}
+
+// ══ CODE ══
+async function generateCode() {
+  const prompt = document.getElementById('code-prompt').value.trim();
+  const type = document.getElementById('code-type').value;
+  if(!prompt){toast('⚠️ বর্ণনা দিন');return;}
+  if(!checkLimit('code')) return;
+  const btn=document.getElementById('code-btn');btn.disabled=true;btn.textContent='তৈরি হচ্ছে...';
+  try {
+    const result = await CodeEngine.generate(type, prompt);
+    codeOutput = result;
+    document.getElementById('code-output').textContent = result;
+    document.getElementById('code-result').style.display='block';
+    await saveUsage('code');
+    toast('✅ কোড তৈরি হয়েছে!');
+  } catch(e){toast('❌ কোড তৈরি হয়নি');}
+  btn.disabled=false;btn.textContent='⚡ কোড তৈরি করুন';
+}
+function copyCode(){Native.copy(codeOutput);toast('✅ কোড কপি হয়েছে!');}
+
+// ══ VIDEO ══
+async function generateVideo() {
+  const prompt = document.getElementById('vid-prompt').value.trim();
+  if(!prompt){toast('⚠️ বর্ণনা দিন');return;}
+  if(!checkLimit('video')) return;
+  const btn=document.getElementById('vid-btn');btn.disabled=true;btn.textContent='তৈরি হচ্ছে...';
+  const result=document.getElementById('vid-result');
+  result.innerHTML=`<div class="fsec"><div style="text-align:center;padding:24px"><div class="spin"><div class="spin-d"></div><div class="spin-d"></div><div class="spin-d"></div></div><div style="font-size:13px;color:var(--mut);margin-top:12px">ভিডিও তৈরি হচ্ছে...<br>৩০-৬০ সেকেন্ড অপেক্ষা করুন</div></div></div>`;
+  try {
+    const r = await VideoEngine.generate(prompt);
+    if(r?.url) {
+      result.innerHTML=`<div class="fsec"><video src="${r.url}" controls style="width:100%;border-radius:10px"></video><button onclick="Native.share('${r.url}')" style="width:100%;margin-top:10px;padding:10px;background:var(--acc);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;color:#fff;cursor:pointer">📤 Share</button></div>`;
+    } else {
+      result.innerHTML=`<div class="fsec"><div style="text-align:center;padding:16px;font-size:13px;color:var(--mut)">ভিডিও request পাঠানো হয়েছে। এটি processing এ আছে। কিছুক্ষণ পর notification পাবেন।</div></div>`;
+    }
+    await saveUsage('video');
+  } catch(e){result.innerHTML='';}
+  btn.disabled=false;btn.textContent='🎬 ভিডিও তৈরি করুন';
+}
+
+// ══ VISION ══
+function visionFileSelected(inp) {
+  const f=inp.files[0];if(!f)return;
+  visionFileData=f;
+  const r=new FileReader();
+  r.onload=e=>{document.getElementById('vision-preview').src=e.target.result;document.getElementById('vision-preview').style.display='block';document.getElementById('vision-drop').style.display='none';document.getElementById('vision-btn').disabled=false;};
+  r.readAsDataURL(f);
+}
+async function analyzeVision() {
+  const task=document.getElementById('vision-task').value;
+  const taskNames={describe:'এই ছবিটি বিস্তারিতভাবে বর্ণনা করো বাংলায়। কী আছে, রঙ, আকার সব বলো।',code:'এই screenshot থেকে সম্পূর্ণ code extract করো।',ocr:'এই ছবিতে যে সব text আছে সেগুলো হুবহু extract করো।',analyze:'এই ছবির গভীর বিশ্লেষণ করো বাংলায়। সব details বলো।',translate:'এই ছবিতে যে text আছে সেটা বাংলায় অনুবাদ করো।'};
+  showLoading('বিশ্লেষণ হচ্ছে...');
+  try {
+    let imgDesc = '';
+    if(visionFileData) {
+      // ছবির তথ্য prompt-এ যোগ করো
+      imgDesc = `\n[ছবির নাম: ${visionFileData.name}, আকার: ${(visionFileData.size/1024).toFixed(1)}KB, ধরন: ${visionFileData.type}]`;
+      // Cloudflare Vision দিয়ে ছবি বিশ্লেষণ চেষ্টা
+      try {
+        const b64 = await new Promise(res=>{const fr=new FileReader();fr.onload=e=>res(e.target.result.split(',')[1]);fr.readAsDataURL(visionFileData);});
+        const cfr = await fetch('https://ai.cloudflare.workers.dev/@cf/llava-hf/llava-1.5-7b-hf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:b64,prompt:taskNames[task]||taskNames.describe,max_tokens:512})});
+        const cfd = await cfr.json();
+        if(cfd.result?.description) {
+          document.getElementById('vision-result').style.display='block';
+          document.getElementById('vision-output').textContent=ChatEngine.FILTER(cfd.result.description);
+          hideLoading(); return;
+        }
+      } catch{}
+    }
+    const reply = await ChatEngine.send((taskNames[task]||taskNames.describe)+imgDesc);
+    document.getElementById('vision-result').style.display='block';
+    document.getElementById('vision-output').textContent=reply;
+  } catch(e){toast('❌ বিশ্লেষণ হয়নি');}
+  hideLoading();
+}
+
+// ══ DOCUMENT ══
+function docFileSelected(inp) {
+  const f=inp.files[0];if(!f)return;
+  docFileData=f;
+  document.getElementById('doc-file-info').style.display='block';
+  document.getElementById('doc-file-info').innerHTML=`📎 <b>${f.name}</b> (${(f.size/1024).toFixed(1)} KB)`;
+  document.getElementById('doc-btn').disabled=false;
+}
+async function analyzeDoc() {
+  const task=document.getElementById('doc-task').value;
+  const q=document.getElementById('doc-q').value;
+  showLoading('ফাইল পড়া হচ্ছে...');
+  try {
+    // txt/csv ফাইল সরাসরি পড়ো
+    let fileContent = '';
+    if(docFileData && (docFileData.type.includes('text') || docFileData.name.endsWith('.txt') || docFileData.name.endsWith('.csv'))) {
+      fileContent = await new Promise(res=>{const fr=new FileReader();fr.onload=e=>res(e.target.result.slice(0,3000));fr.readAsText(docFileData,'UTF-8');});
+    }
+    const taskPrompts={
+      summary: fileContent?`নিচের document-এর সারসংক্ষেপ দাও বাংলায়:\n\n${fileContent}`:`"${docFileData?.name}" ফাইলের সারসংক্ষেপ কী হতে পারে বাংলায় বলো।`,
+      qa: fileContent?`নিচের document থেকে এই প্রশ্নের উত্তর দাও বাংলায়:\nপ্রশ্ন: ${q}\n\nDocument:\n${fileContent}`:`ডকুমেন্ট "${docFileData?.name}" সম্পর্কে: ${q}`,
+      analyze: fileContent?`নিচের document বিশ্লেষণ করো বাংলায়:\n\n${fileContent}`:`"${docFileData?.name}" ফাইলের বিশ্লেষণ করো।`,
+      translate: fileContent?`নিচের content বাংলায় অনুবাদ করো:\n\n${fileContent}`:'ডকুমেন্টের content বাংলায় অনুবাদ করো।',
+      table: fileContent?`নিচের data থেকে সব table/list extract করো:\n\n${fileContent}`:'ডকুমেন্টের সব data/table extract করো।',
+    };
+    const reply = await ChatEngine.send(taskPrompts[task]||taskPrompts.summary);
+    document.getElementById('doc-result').style.display='block';
+    document.getElementById('doc-output').textContent=reply;
+  } catch(e){toast('❌ বিশ্লেষণ হয়নি');}
+  hideLoading();
+}
+
+// ══ VOICE ══
+function toggleVoice(){if(voiceOn)stopVoice();else startVoice();}
+function startVoice(){
+  const btn=document.getElementById('v-btn');const status=document.getElementById('v-status');
+  voiceOn=true;btn.classList.add('recording');btn.textContent='⏹';status.textContent='🔴 রেকর্ডিং চলছে...';
+  document.getElementById('v-transcript').textContent='শুনছি...';
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){
+    voiceRecog=new SR();voiceRecog.lang='bn-BD';voiceRecog.continuous=false;voiceRecog.interimResults=true;
+    voiceRecog.onresult=e=>{const t=Array.from(e.results).map(r=>r[0].transcript).join('');document.getElementById('v-transcript').textContent=t;if(e.results[e.results.length-1].isFinal){stopVoice();processVoice(t);}};
+    voiceRecog.onerror=()=>stopVoice();voiceRecog.start();
+  } else {
+    setTimeout(()=>{stopVoice();processVoice('বাংলাদেশ সম্পর্কে বলো');},2000);
+  }
+}
+function stopVoice(){voiceOn=false;const btn=document.getElementById('v-btn');btn.classList.remove('recording');btn.textContent='🎤';document.getElementById('v-status').textContent='আবার চাপুন বলতে';if(voiceRecog){voiceRecog.stop();voiceRecog=null;}}
+async function processVoice(text){
+  showLoading('AI উত্তর দিচ্ছে...');
+  try{const reply=await ChatEngine.send(text);document.getElementById('v-reply').style.display='block';document.getElementById('v-reply').textContent=reply;speakBanglaText(reply);}catch(e){}
+  hideLoading();
+}
+async function speakBanglaText(text){
+  try{const blob=await Promise.race([VoiceEngine.TTS[0].f(text),new Promise((_,j)=>setTimeout(j,5000))]);if(blob){const url=URL.createObjectURL(blob);const a=new Audio(url);a.play();return;}}catch{}
+  if(speechSynthesis){const u=new SpeechSynthesisUtterance(text);u.lang='bn-BD';u.rate=0.9;speechSynthesis.speak(u);}
+}
+function speakBangla(btn){const bub=btn.closest('.mw')?.querySelector('.bub-ai');if(bub)speakBanglaText(bub.innerText);}
+function testTTS(){speakBanglaText('আমি BDAi। বাংলাদেশের নিজস্ব AI সহকারী।');}
+function clearVoice(){document.getElementById('v-transcript').textContent='আপনার কথা এখানে দেখাবে...';document.getElementById('v-reply').style.display='none';speechSynthesis?.cancel();}
+
+// ══ WEB SEARCH ══
+async function doWebSearch(){
+  const q=document.getElementById('web-query').value.trim();if(!q){toast('⚠️ কী খুঁজছেন লিখুন');return;}
+  showLoading('সার্চ হচ্ছে...');
+  try{
+    const raw=await WebEngine.search(q);
+    const summary=await ChatEngine.send(`নিচের search result থেকে "${q}" সম্পর্কে বাংলায় সংক্ষিপ্ত উত্তর দাও:\n\n${raw.slice(0,2000)}`);
+    document.getElementById('web-result').style.display='block';
+    document.getElementById('web-output').textContent=summary;
+  }catch(e){toast('❌ সার্চ হয়নি');}
+  hideLoading();
+}
+
+// ══ WRITING ══
+async function generateWrite(){
+  const prompt=document.getElementById('write-prompt').value.trim();const type=document.getElementById('write-type').value;
+  if(!prompt){toast('⚠️ বিষয় লিখুন');return;}
+  showLoading('লেখা তৈরি হচ্ছে...');
+  const typePrompts={blog:'একটি SEO-friendly blog post',email:'একটি professional email',cv:'একটি CV/Resume',social:'social media post',seo:'SEO-optimized content',product:'product description',letter:'formal letter'};
+  try{
+    const reply=await ChatEngine.send(`${typePrompts[type]||'content'} তৈরি করো এই বিষয়ে: ${prompt}\nবাংলায় লিখো।`);
+    document.getElementById('write-result').style.display='block';
+    document.getElementById('write-output').textContent=reply;
+  }catch(e){toast('❌ তৈরি হয়নি');}
+  hideLoading();
+}
+
+// ══ TRANSLATE ══
+async function doTranslate(){
+  const text=document.getElementById('tr-input').value.trim();
+  const from=document.getElementById('tr-from').value;const to=document.getElementById('tr-to').value;
+  if(!text){toast('⚠️ লেখা দিন');return;}
+  showLoading('অনুবাদ হচ্ছে...');
+  try{
+    const reply=await ChatEngine.send(`Translate the following to ${to}. Only give the translation, nothing else:\n\n${text}`);
+    document.getElementById('tr-result').style.display='block';
+    document.getElementById('tr-output').textContent=reply;
+  }catch(e){toast('❌ অনুবাদ হয়নি');}
+  hideLoading();
+}
+function swapLang(){const f=document.getElementById('tr-from');const t=document.getElementById('tr-to');const tmp=f.value;f.value=t.value;t.value=tmp;}
+
+// ══ PAYMENT ══
+function selPlan(el,id){document.querySelectorAll('.plan-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');selPlanId=id;}
+function selPayMethod(idx){document.querySelectorAll('.pm-item').forEach(p=>p.classList.remove('sel'));document.getElementById('pm-'+idx)?.classList.add('sel');selPayIdx=idx;}
+function submitPayment(){
+  // Test Mode — সবাই Premium, payment দরকার নেই
+  openSheet(`<div class="sh-title">⭐ আপনি ইতিমধ্যে Premium!</div><div style="text-align:center;padding:16px 0 20px"><div style="font-size:56px;margin-bottom:14px">🎉</div><div style="font-size:15px;font-weight:600;margin-bottom:8px">Test Mode চলছে</div><div style="font-size:13px;color:var(--mut);line-height:1.8">আপনি এখন সব ফিচার<br><b>Unlimited</b> ব্যবহার করতে পারছেন।<br><br>২৪ এপ্রিল ২০২৬ পর্যন্ত সম্পূর্ণ বিনামূল্যে!</div></div><button class="sh-btn sh-acc" onclick="closeSheet();goTo('home')">🏠 Home এ যাই</button>`);
+}
+
+// ══ MISC ══
+function openFileAttach(type){toast('📎 '+type+' attach coming soon');}
+function viewImg(src){ivSrc=src;document.getElementById('iv-img').src=src;document.getElementById('iv').classList.add('on');}
+function closeIV(){document.getElementById('iv').classList.remove('on');}
+function copyIV(){Native.copy(ivSrc);toast('✅ URL copied!');}
+function copyResult(id){const el=document.getElementById(id);if(el){Native.copy(el.textContent);toast('✅ কপি হয়েছে!');}}
+function showHistory(){toast('📜 History আসছে...');}
+function showAbout(){openSheet(`<div class="sh-title">BDAi সম্পর্কে</div><div style="text-align:center;padding:10px 0 20px"><img src="logo.png" style="width:60px;height:60px;object-fit:contain;margin-bottom:12px" onerror="this.style.display='none'"><div style="font-size:16px;font-weight:700;margin-bottom:8px">${brand.appName||'BDAi By Azad'}</div><div style="font-size:13px;color:var(--mut);line-height:1.8">বাংলাদেশের প্রথম নিজস্ব<br>মাল্টি-ফাংশনাল AI প্ল্যাটফর্ম 🇧🇩</div><div style="margin-top:14px;font-size:12px;color:var(--mut)">Version ${Native.version()} • Made in Bangladesh</div></div><button class="sh-btn sh-out" onclick="closeSheet()">ঠিক আছে</button>`);}
+function doLogout(){openSheet(`<div class="sh-title">Logout করবেন?</div><p style="font-size:13px;color:var(--mut);margin-bottom:20px;line-height:1.7">Logout করলে আবার login করতে হবে।</p><button class="sh-btn sh-red" onclick="Native.logout();closeSheet()">🚪 Logout করুন</button><button class="sh-btn sh-out" onclick="closeSheet()">বাতিল</button>`);}
+
+// ══ INIT ══
+window.onload = () => {
+  setTimeout(() => {
+    const saved = localStorage.getItem('bdai_u');
+    if(saved){try{const d=JSON.parse(saved);window._nativeAuth(d);}catch{goTo('login');}}
+    else goTo('login');
+  }, 2200);
+};
+const _origNativeAuth = window._nativeAuth;
+window._nativeAuth = (j) => {
+  const d = typeof j==='string'?JSON.parse(j):j;
+  d.plan = 'premium'; // সবসময় premium
+  localStorage.setItem('bdai_u', JSON.stringify(d));
+  _origNativeAuth(d);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+-optimizationpasses 5
+-repackageclasses 'x'
+-allowaccessmodification
+-keep class com.bdai.azad.MainActivity { *; }
+-keep class com.bdai.azad.BDAiApp { *; }
+-keep class com.bdai.azad.MainActivity$Bridge { *; }
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-keepattributes JavascriptInterface
+-assumenosideeffects class android.util.Log { public static *** d(...); public static *** v(...); public static *** i(...); }
